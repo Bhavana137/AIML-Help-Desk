@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GENAI Academic Helpdesk</title>
+
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body{
+            background:linear-gradient(135deg,#4facfe,#00f2fe);
+            min-height:100vh;
+            padding:40px 0;
+        }
+
+        .container{
+            width:900px;
+            margin:auto;
+            background:#fff;
+            padding:35px;
+            border-radius:25px;
+            box-shadow:0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        h1{
+            text-align:center;
+            color:#1a237e;
+            font-size:52px;
+            margin-bottom:10px;
+            text-shadow:2px 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .subtitle{
+            text-align:center;
+            color:#666;
+            font-size:22px;
+            margin-bottom:30px;
+            font-style:italic;
+        }
+
+        .menu{
+            display:flex;
+            justify-content:center;
+            gap:15px;
+            margin-bottom:20px;
+            flex-wrap:wrap;
+        }
+
+        .menu button{
+            width:140px;
+            height:55px;
+            border:none;
+            border-radius:30px;
+            background:linear-gradient(45deg,#6a11cb,#2575fc);
+            color:white;
+            font-size:18px;
+            font-weight:bold;
+            cursor:pointer;
+            transition:0.3s;
+        }
+
+        .menu button:hover{
+            transform:translateY(-3px);
+            box-shadow:0 6px 15px rgba(0,0,0,0.3);
+        }
+
+        .chat-box{
+            width:100%;
+            height:450px;
+            background:#f4f7fb;
+            border-radius:20px;
+            padding:20px;
+            overflow-y:auto;
+            box-shadow:inset 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .welcome-msg{
+            background:white;
+            padding:15px;
+            border-radius:15px;
+            width:fit-content;
+            max-width:70%;
+            box-shadow:0 2px 8px rgba(0,0,0,0.1);
+            line-height:1.6;
+        }
+
+        .user-msg{
+            background:#4caf50;
+            color:white;
+            padding:12px 18px;
+            border-radius:20px 20px 0 20px;
+            width:fit-content;
+            max-width:70%;
+            margin:15px 0 15px auto;
+            box-shadow:0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        .bot-msg{
+            background:white;
+            color:#333;
+            padding:12px 18px;
+            border-radius:20px 20px 20px 0;
+            width:fit-content;
+            max-width:70%;
+            margin:15px 0;
+            box-shadow:0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .time{
+            font-size:12px;
+            margin-top:5px;
+            text-align:right;
+            opacity:0.8;
+        }
+
+        .input-area{
+            display:flex;
+            gap:10px;
+            margin-top:20px;
+        }
+
+        .input-area input{
+            flex:1;
+            height:60px;
+            border:none;
+            border-radius:30px;
+            padding:0 25px;
+            font-size:18px;
+            outline:none;
+            box-shadow:0 3px 10px rgba(0,0,0,0.15);
+        }
+
+        .input-area button{
+            width:120px;
+            border:none;
+            border-radius:30px;
+            background:linear-gradient(45deg,#ff512f,#dd2476);
+            color:white;
+            font-size:20px;
+            font-weight:bold;
+            cursor:pointer;
+            transition:0.3s;
+        }
+
+        .input-area button:hover{
+            transform:scale(1.05);
+            box-shadow:0 6px 15px rgba(0,0,0,0.3);
+        }
+
+        ::-webkit-scrollbar{
+            width:8px;
+        }
+
+        ::-webkit-scrollbar-thumb{
+            background:#2575fc;
+            border-radius:10px;
+        }
+
+        ::-webkit-scrollbar-track{
+            background:#ddd;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <h1>GENAI Academic Helpdesk</h1>
+
+        <p class="subtitle">
+            Your Intelligent Campus Assistant
+        </p>
+
+        <div class="menu">
+            <button onclick="setQuestion('What are library timings?')">Library</button>
+            <button onclick="setQuestion('What is placement eligibility?')">Placement</button>
+            <button onclick="setQuestion('What are hostel rules?')">Hostel</button>
+            <button onclick="setQuestion('When do exams start?')">Exams</button>
+        </div>
+
+        <div class="chat-box">
+
+            <div class="welcome-msg">
+                Hello! 👋 I am your GENAI Academic Assistant.<br><br>
+                Ask anything about:
+                <br>📚 Syllabus
+                <br>🏢 Placements
+                <br>🏠 Hostel
+                <br>📝 Exams and more...
+            </div>
+
+        </div>
+
+        <div class="input-area">
+            <input type="text"
+                   id="question"
+                   placeholder="Ask your question...">
+
+            <button onclick="ask()">Send</button>
+        </div>
+
+    </div>
+<script>
+    function setQuestion(text) {
+        document.getElementById("question").value = text;
+    }
+
+    async function ask() {
+
+        let q = document.getElementById("question").value;
+
+        if (q.trim() === "") {
+            return;
+        }
+
+        let box = document.querySelector(".chat-box");
+
+        // Display user message
+        box.innerHTML += `
+            <div class="user-msg">
+                ${q}
+                <div class="time">
+                    ${new Date().toLocaleTimeString()}
+                </div>
+            </div>
+        `;
+
+        // Scroll to bottom
+        box.scrollTop = box.scrollHeight;
+
+        try {
+
+            // Send request to Spring Boot backend
+            let res = await fetch("/ask", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    question: q
+                })
+            });
+
+            let data = await res.json();
+            
+            // Display bot response
+            box.innerHTML += `
+                <div class="bot-msg">
+                    ${data.answer}
+                    <div class="time">
+                        ${new Date().toLocaleTimeString()}
+                    </div>
+                </div>
+            `;
+
+        } catch (error) {
+
+            // Error message if backend is unavailable
+            box.innerHTML += `
+                <div class="bot-msg">
+                    Unable to connect to the server.
+                    <div class="time">
+                        ${new Date().toLocaleTimeString()}
+                    </div>
+                </div>
+            `;
+        }
+
+        // Clear input field
+        document.getElementById("question").value = "";
+
+        // Scroll to latest message
+        box.scrollTop = box.scrollHeight;
+    }
+
+    // Press Enter to send message
+    document.getElementById("question").addEventListener("keypress", function (event) {
+        if (event.key === "Enter") {
+            ask();
+        }
+    });
+</script>
+</body>
+</html>
