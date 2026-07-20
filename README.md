@@ -24,21 +24,6 @@ The **GENAI Academic Help Desk** is an intelligent virtual assistant designed fo
 - 🎨 Modern Responsive UI
 
 ---
-
-# 🖼️ Project Screenshots
-
-## 🏠 Home Page
-
-![Home Page](screenshots/home.png)
-
----
-
-## 💬 AI Chatbot Response
-
-![Chatbot Response](screenshots/chatbot.png)
-
----
-
 ## 🛠️ Technologies Used
 
 ### Frontend
@@ -79,10 +64,6 @@ AIML-Help-Desk/
 │   ├── hostel_information.pdf
 │   ├── academic_circulars.pdf
 │   └── college_handbook.pdf
-│
-└── screenshots/
-    ├── home.png
-    └── chatbot.png
 ```
 
 ---
